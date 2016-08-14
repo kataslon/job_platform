@@ -1,8 +1,8 @@
 FactoryGirl.define do
   factory :vacancy do
     company_id 1
-    deadline "2016-08-12"
+    deadline { Faker::Date.between(2.days.ago, 20.days.from_now) }
     speciality_id 1
-    relevance false
+    relevance true
   end
 end
