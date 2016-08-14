@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :country do
-    country "MyString"
+    country "Ukraine"
   end
 end

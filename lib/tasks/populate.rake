@@ -30,7 +30,7 @@ namespace :db do
     desc 'Create fake specialities'
     task specialities: :environment do
 
-      25.times do
+      5.times do
         FactoryGirl.create :speciality
       end
     end
