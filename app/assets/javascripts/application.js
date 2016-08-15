@@ -14,8 +14,6 @@
 //= require bootstrap-sprockets
 //= require jquery.turbolinks
 //= require jquery_ujs
-//= require jquery-ui/autocomplete
-//= require autocomplete-rails
 //= require wice_grid
 //= require jquery-ui/datepicker
 //= require turbolinks

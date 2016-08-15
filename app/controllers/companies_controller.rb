@@ -1,5 +1,5 @@
 class CompaniesController < ApplicationController
-  before_action :set_company, only: [:show]
+  before_action :set_company, only: [:show, :edit, :update]
 
   def show
   end
@@ -8,9 +8,45 @@ class CompaniesController < ApplicationController
     @companies_grid = initialize_grid(Company)
   end
 
+  def new
+    @company = Company.new
+  end
+
+  def create
+    @company = Company.create(company_params)
+    if @company.save
+      flash[:success] = "New company was saccessfully created"
+      redirect_to @company
+    else
+      render 'new'
+    end
+  end
+
+  def edit
+  end
+
+  def update
+    if @company.update_attributes(company_params)
+      flash[:success] = "Company updated"
+      redirect_to @company
+    else
+      render 'edit'
+    end
+  end
+
+  def destroy
+    Company.find(params[:id]).destroy
+    flash[:success] = "Company deleted."
+    redirect_to companies_path
+  end
+
   protected
 
     def set_company
       @company = Company.find(params[:id])
+    end
+
+    def company_params
+      params.require(:company).permit(:name, :description, :city_id)
     end
 end

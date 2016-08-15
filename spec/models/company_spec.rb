@@ -3,11 +3,13 @@ require 'spec_helper'
 describe Company do
 
   let(:city) { FactoryGirl.create(:city) }
-  before { @company = city.companies.build(name: "Administration of the President") }
+  before { @company = city.companies.build(name: "Administration of the President",
+                                           description:  Faker::Lorem.paragraph(5)) }
 
   subject { @company }
 
   it { should respond_to(:name) }
+  it { should respond_to(:description) }
   it { should respond_to(:city_id) }
   it { should respond_to(:city) }
   it { expect(@company.city).to eq city }
