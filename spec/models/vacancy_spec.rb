@@ -5,7 +5,7 @@ describe Vacancy do
   let(:company) { FactoryGirl.create(:company) }
   let(:speciality) { FactoryGirl.create(:speciality) }
   before { @vacancy = company.vacancies.build(title:         "Administration of the President",
-                                              description:   Faker::Lorem.paragraph(2, false, 4),
+                                              description:   Faker::Lorem.paragraph(10),
                                               speciality_id: speciality.id,
                                               deadline:      Faker::Date.between(2.days.ago, 20.days.from_now)
                                               )}

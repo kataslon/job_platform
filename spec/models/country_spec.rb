@@ -1,5 +1,13 @@
-require 'rails_helper'
+require 'spec_helper'
 
-RSpec.describe Country, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+describe Company do
+
+  let(:country) { FactoryGirl.create(:country) }
+
+  subject { country }
+
+  it { should respond_to(:country) }
+  it { should respond_to(:cities) }
+
+  it { should be_valid }
 end

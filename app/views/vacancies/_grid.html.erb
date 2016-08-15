@@ -9,11 +9,7 @@
     end
 
     g.column name: 'Vacancy', attribute: 'title'  do |vacancy|
-      vacancy.title
-    end
-
-    g.column name: 'Description' do |vacancy|
-      truncate(vacancy.description, length: 120)
+      link_to vacancy.title, vacancy
     end
 
     g.column name: 'Company', attribute: 'company_id', custom_filter: Company.all.map { |c| [c.name, c.id] } do |vacancy|
@@ -24,8 +20,5 @@
       vacancy.deadline
     end
 
-    g.column do |vacancy|
-      link_to('Show', vacancy_path(vacancy))
-    end
   end -%>
 <% end -%>

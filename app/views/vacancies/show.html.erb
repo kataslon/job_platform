@@ -1,0 +1,11 @@
+<div class="header">
+  <h2 >
+    <%= @vacancy.title %>
+  </h2>
+  <h3>
+    <%= link_to @vacancy.company.name, company_path(@vacancy.company) %>
+  </h3>
+  <p>
+    <%= @vacancy.description %>
+  </p>
+</div>

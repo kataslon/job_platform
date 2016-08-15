@@ -1,5 +1,13 @@
-require 'rails_helper'
+require 'spec_helper'
 
-RSpec.describe Speciality, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+describe Speciality do
+
+  let(:speciality) { FactoryGirl.create(:speciality) }
+
+  subject { speciality }
+
+  it { should respond_to(:name) }
+  it { should respond_to(:vacancies) }
+
+  it { should be_valid }
 end
