@@ -17,7 +17,7 @@
     end
 
     g.column name: 'Description' do |company|
-      company.description
+      truncate(company.description, length: 80)
     end
 
   end -%>

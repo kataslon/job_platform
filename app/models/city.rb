@@ -1,4 +1,6 @@
 class City < ActiveRecord::Base
+  resourcify
+
   belongs_to :country
   has_many :companies
 

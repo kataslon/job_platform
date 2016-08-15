@@ -1,4 +1,7 @@
 class CompaniesController < ApplicationController
+
+  load_and_authorize_resource
+  before_action :authenticate_user!, except: [:index, :show]
   before_action :set_company, only: [:show, :edit, :update]
 
   def show

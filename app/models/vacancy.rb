@@ -1,4 +1,6 @@
 class Vacancy < ActiveRecord::Base
+  resourcify
+
   belongs_to :company
   belongs_to :speciality
 

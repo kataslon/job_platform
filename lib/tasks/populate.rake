@@ -12,6 +12,24 @@ namespace :db do
        Vacancy].each(&:delete_all)
     end
 
+    desc 'Create test users with roles'
+    task users: :environment do
+      User.delete_all
+
+      [:admin, :company_owner, :manager].each do |role|
+        FactoryGirl.create(
+          :user, role,
+          email: role.to_s + '@foo.bar',
+          password: '12345678',
+          password_confirmation: '12345678'
+        )
+      end
+
+      10.times do
+        FactoryGirl.create :user
+      end
+    end
+
     desc 'Create countries and cities'
     task cities: :environment do
       Rake.application.invoke_task('db:seed')
@@ -47,7 +65,7 @@ namespace :db do
     end
 
     desc 'Erase and fill database with fake data'
-    task :all => [:delete_all, :cities, :companies, :specialities, :vacancies]
+    task :all => [:delete_all, :users, :cities, :companies, :specialities, :vacancies]
 
   end
 end

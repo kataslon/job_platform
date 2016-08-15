@@ -2,7 +2,9 @@
 <div class="row">
   <div class="span12">
     <div align='right'>
-      <%= link_to "New company", new_company_path %>
+      <% if can? :new, Company %>
+        <%= link_to "New company", new_company_path %>
+      <% end %>
     </div>
     <%= render "grid" %>
   </div>
