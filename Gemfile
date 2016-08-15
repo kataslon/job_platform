@@ -20,6 +20,9 @@ gem 'sdoc',                    '~> 0.4.0', group: :doc
 gem "wice_grid",               '3.6.2'
 gem 'font-awesome-sass',       '~> 4.3'
 gem 'kaminari'
+gem 'devise', '~> 3.5', '>= 3.5.6'
+gem 'cancancan', '~> 1.10'
+gem 'rolify'
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.4', '>= 3.4.2'
