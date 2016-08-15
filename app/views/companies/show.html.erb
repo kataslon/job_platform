@@ -12,6 +12,7 @@
 </div>
 
 <div>
+  <%= link_to 'Create new vacancy', new_vacancy_path, class: "btn btn-default" %>
   <%= link_to 'Edit', edit_company_path(@company), class: "btn btn-default" %>
   <%= link_to 'Delete', company_path(@company), method: 'delete', class: "btn btn-default" %>
 </div>
