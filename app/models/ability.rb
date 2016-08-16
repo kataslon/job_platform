@@ -12,11 +12,11 @@ class Ability
     elsif user.has_role? :manager
       can :manage, [Vacancy]
       can [:edit, :update], [User], id: user.id
-      can :read, :all
-    elsif user.has_role? :user
-      can :read, :all
+      can :read, [Company]
+    elsif user.has_role? :applicant
+      can :read, [Company, Vacancy]
     else
-      can :read, :all
+      can :read, [Company, Vacancy]
     end
     # Define abilities for the passed in user here. For example:
     #

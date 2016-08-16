@@ -16,7 +16,7 @@ namespace :db do
     task users: :environment do
       User.delete_all
 
-      [:admin, :company_owner, :manager].each do |role|
+      [:admin, :company_owner, :manager, :applicant].each do |role|
         FactoryGirl.create(
           :user, role,
           email: role.to_s + '@foo.bar',

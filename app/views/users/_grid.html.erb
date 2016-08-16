@@ -1,0 +1,32 @@
+<%= form_tag('', method: :get) do %>
+  <button class="wg-external-submit-button btn btn-default" data-grid-name="grid">Submit</button>
+  <button class="wg-external-reset-button btn btn-default" data-grid-name="grid">Reset</button>
+
+  <%= grid(@users_grid, hide_submit_button: true, hide_reset_button: true) do |g|
+
+    g.column name: 'Email', attribute: 'email' do |user|
+      user.email
+    end
+
+    g.column name: 'last_sign_in_at', attribute: 'last_sign_in_at'  do |user|
+      user.last_sign_in_at
+    end
+
+    g.column name: 'Roles' do |user|
+      user.roles.pluck(:name).sort.join(', ')
+    end
+
+    if can? :edit, User
+      g.column name: 'Edit' do |user|
+        link_to 'Edit', edit_user_path(user)
+      end
+    end
+
+    if can? :destroy, User
+      g.column name: 'Edit' do |user|
+        link_to 'Delete', user_path(user), method: :delete, data: { confirm: "Are you sure?"}
+      end
+    end
+
+  end -%>
+<% end -%>

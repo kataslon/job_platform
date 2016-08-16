@@ -25,6 +25,7 @@ gem 'cancancan', '~> 1.10'
 gem 'rolify'
 
 group :development, :test do
+  gem 'byebug'
   gem 'rspec-rails', '~> 3.4', '>= 3.4.2'
   gem 'guard-rspec', '~> 4.6', '>= 4.6.4'
   gem 'better_errors', git: 'https://github.com/manafire/better_errors.git', branch: 'allow_domain'

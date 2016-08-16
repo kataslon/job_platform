@@ -14,5 +14,9 @@ FactoryGirl.define do
     trait :manager do
       after(:create) { |user| user.add_role(:manager) }
     end
+
+    trait :applicant do
+      after(:create) { |user| user.add_role(:applicant) }
+    end
   end
 end
