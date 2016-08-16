@@ -9,14 +9,15 @@ namespace :db do
        City,
        Company,
        Speciality,
-       Vacancy].each(&:delete_all)
+       Vacancy,
+       User].each(&:delete_all)
     end
 
     desc 'Create test users with roles'
     task users: :environment do
       User.delete_all
 
-      [:admin, :company_owner, :manager, :applicant].each do |role|
+      [:admin, :manager, :applicant].each do |role|
         FactoryGirl.create(
           :user, role,
           email: role.to_s + '@foo.bar',
@@ -39,8 +40,24 @@ namespace :db do
     task companies: :environment do
 
       City.all.each do |city|
-        5.times do
-          FactoryGirl.create( :company, city_id: city.id )
+        2.times do
+          user = FactoryGirl.create(
+            :user, :company_owner,
+            email: Faker::Internet.email,
+            password: '12345678',
+            password_confirmation: '12345678'
+          )
+          FactoryGirl.create( :company, city_id: city.id, user_id: user.id, approval: true )
+        end
+
+        2.times do
+          user = FactoryGirl.create(
+            :user, :company_owner,
+            email: Faker::Internet.email,
+            password: '12345678',
+            password_confirmation: '12345678'
+          )
+          FactoryGirl.create( :company, city_id: city.id, user_id: user.id, approval: false )
         end
       end
     end

@@ -5,6 +5,8 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  has_many :companies
+
   attr_accessor :admin, :company_owner, :manager, :applicant
 
   def set_role(params)

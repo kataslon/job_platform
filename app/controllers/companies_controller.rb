@@ -3,12 +3,12 @@ class CompaniesController < ApplicationController
   load_and_authorize_resource
   before_action :authenticate_user!, except: [:index, :show]
   before_action :set_company, only: [:show, :edit, :update]
+  before_action :set_grid, only: [:index, :approve_company, :reject_company]
 
   def show
   end
 
   def index
-    @companies_grid = initialize_grid(Company)
   end
 
   def new
@@ -43,10 +43,36 @@ class CompaniesController < ApplicationController
     redirect_to companies_path
   end
 
+  def approve_company
+    @company = Company.find(params[:id])
+    @company.approve
+    respond_to do |format|
+      format.html { redirect_to companies_path }
+      format.js
+    end
+  end
+
+  def reject_company
+    @company = Company.find(params[:id])
+    @company.reject
+    respond_to do |format|
+      format.html { redirect_to companies_path }
+      format.js
+    end
+  end
+
   protected
 
     def set_company
       @company = Company.find(params[:id])
+    end
+
+    def set_grid
+      if current_user && current_user.has_role?(:admin)
+        @companies_grid = initialize_grid(Company)
+      else
+        @companies_grid = initialize_grid(Company.where(approval: true))
+      end
     end
 
     def company_params

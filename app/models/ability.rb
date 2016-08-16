@@ -7,16 +7,18 @@ class Ability
       can :manage, :all
     elsif user.has_role? :company_owner
       can :manage, [Company, Vacancy]
-      can [:edit, :update], [User], id: user.id
+      can [:edit, :update], [User]
       can :read, :all
     elsif user.has_role? :manager
       can :manage, [Vacancy]
+      can [:new, :create, :show, :index], [Company]
       can [:edit, :update], [User], id: user.id
-      can :read, [Company]
     elsif user.has_role? :applicant
-      can :read, [Company, Vacancy]
+      can [:new, :show, :index], [Company]
+      can :read, [Vacancy]
     else
-      can :read, [Company, Vacancy]
+      can [:new, :create, :show, :index], [Company]
+      can :read, [Vacancy]
     end
     # Define abilities for the passed in user here. For example:
     #

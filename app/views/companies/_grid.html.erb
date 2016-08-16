@@ -17,7 +17,13 @@
     end
 
     g.column name: 'Description' do |company|
-      truncate(company.description, length: 80)
+      truncate(company.description, length: 70)
+    end
+
+    if current_user && current_user.has_role?(:admin)
+      g.column name: 'Approval', attribute: 'approval' do |company|
+        [change_approval(company), {class: edited_company(company.id)}]
+      end
     end
 
   end -%>
