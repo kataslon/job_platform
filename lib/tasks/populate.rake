@@ -40,24 +40,33 @@ namespace :db do
     task companies: :environment do
 
       City.all.each do |city|
-        2.times do
-          create_company(city, true)
+        ['_1', '_2', '_3'].each do |n|
+          # owner = create_owner(city.city + n) # ????? возникает ошибка валидации email, при этом в консоли User создается при такой формулировке
+          owner = create_owner(city.to_s + n)
+          create_company(city, owner, true)
         end
 
-        2.times do
-          create_company(city, false)
+        ['_4', '_5', '_6'].each do |n|
+          owner = create_owner(city.to_s + n)
+          create_company(city, owner, false)
         end
       end
+
+      company_owner = create_owner('company_owner')
+      create_company(City.last, company_owner, true)
     end
 
-    def create_company(city, approval)
-      user = FactoryGirl.create(
+    def create_owner(name)
+        FactoryGirl.create(
           :user, :company_owner,
-          email: Faker::Internet.email,
+          email: name + '@foo.bar',
           password: '12345678',
           password_confirmation: '12345678'
         )
-        company = FactoryGirl.build( :company, city_id: city.id, user_id: user.id, approval: approval )
+      end
+
+    def create_company(city, owner, approval)
+        company = FactoryGirl.build( :company, city_id: city.id, user_id: owner.id, approval: approval )
         company.save if Company.where(name: company.name) == []
     end
 
