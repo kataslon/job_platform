@@ -41,32 +41,32 @@ namespace :db do
 
       City.all.each do |city|
         2.times do
-          user = FactoryGirl.create(
-            :user, :company_owner,
-            email: Faker::Internet.email,
-            password: '12345678',
-            password_confirmation: '12345678'
-          )
-          FactoryGirl.create( :company, city_id: city.id, user_id: user.id, approval: true )
+          create_company(city, true)
         end
 
         2.times do
-          user = FactoryGirl.create(
-            :user, :company_owner,
-            email: Faker::Internet.email,
-            password: '12345678',
-            password_confirmation: '12345678'
-          )
-          FactoryGirl.create( :company, city_id: city.id, user_id: user.id, approval: false )
+          create_company(city, false)
         end
       end
+    end
+
+    def create_company(city, approval)
+      user = FactoryGirl.create(
+          :user, :company_owner,
+          email: Faker::Internet.email,
+          password: '12345678',
+          password_confirmation: '12345678'
+        )
+        company = FactoryGirl.build( :company, city_id: city.id, user_id: user.id, approval: approval )
+        company.save if Company.where(name: company.name) == []
     end
 
     desc 'Create fake specialities'
     task specialities: :environment do
 
-      5.times do
-        FactoryGirl.create :speciality
+      15.times do
+        speciality = FactoryGirl.build :speciality
+        speciality.save if Speciality.where(name: speciality.name) == []
       end
     end
 
