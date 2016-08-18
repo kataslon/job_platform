@@ -16,6 +16,15 @@ class UsersController < ApplicationController
 
   def update
     @user.set_role(user_params)
+    if current_user.has_role? :company_owner
+      if params[:manager].to_i == 1
+        @user.set_manager(user_params)
+      else
+        manager = Manager.find_by(id: @user.id)
+        manager.destroy if manager
+        redirect_to users_path
+      end
+    end
     if @user.save
       flash[:success] = "User updated"
       redirect_to users_path
@@ -37,6 +46,6 @@ class UsersController < ApplicationController
     end
 
     def user_params
-      params.require(:user).permit(:email, :admin, :company_owner, :manager, :applicant)
+      params.require(:user).permit(:email, :admin, :company_owner, :manager, :applicant, :companies)
     end
 end

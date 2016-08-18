@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :companies
+  has_many :managers
 
   attr_accessor :admin, :company_owner, :manager, :applicant
 
@@ -13,6 +14,10 @@ class User < ActiveRecord::Base
     params.each do |role, value|
       value.to_i == 1 ? self.add_role(eval(":#{role}")) : self.remove_role(eval(":#{role}"))
     end
+  end
+
+  def set_manager(params)
+      Manager.create(user_id: self.id, company_id: params[:companies])
   end
 
   private
