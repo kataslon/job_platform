@@ -14,8 +14,10 @@
 </div>
 
 <div>
-  <% if can? :edit, :destroy, Vacancy %>
+  <% if can? :edit, Vacancy %>
     <%= link_to 'Edit', edit_vacancy_path(@vacancy), class: "btn btn-default" %>
+  <% end %>
+  <% if can? :destroy, Vacancy %>
     <%= link_to 'Delete', vacancy_path(@vacancy), method: 'delete', class: "btn btn-default" %>
   <% end %>
 </div>
