@@ -20,9 +20,10 @@ gem 'sdoc',                    '~> 0.4.0', group: :doc
 gem "wice_grid",               '3.6.2'
 gem 'font-awesome-sass',       '~> 4.3'
 gem 'kaminari'
-gem 'devise', '~> 3.5', '>= 3.5.6'
-gem 'cancancan', '~> 1.10'
+gem 'devise',                  '~> 3.5', '>= 3.5.6'
+gem 'cancancan',               '~> 1.10'
 gem 'rolify'
+gem 'carrierwave',             '~> 0.11'
 
 group :development, :test do
   gem 'byebug'
