@@ -8,16 +8,21 @@ class Ability
     elsif user.has_role? :company_owner
       can :manage, [Company, Vacancy]
       can [:edit, :update], [User]
+      can [:edit, :update], [Response]
       can :read, :all
     elsif user.has_role? :manager
       can :manage, [Vacancy]
+      can [:edit, :update], [Response]
       can [:new, :create, :show, :index], [Company]
       can [:edit, :update], [User], id: user.id
     elsif user.has_role? :applicant
-      can [:new, :show, :index], [Company]
+      can :manage, [Proposal], id: user.proposals.pluck(:id)
+      can [:edit, :update], [Response]
       can :read, [Vacancy]
+      can [:new, :show, :index], [Company]
     else
       can [:new, :create, :show, :index], [Company]
+      can :read, [Proposal]
       can :read, [Vacancy]
     end
     # Define abilities for the passed in user here. For example:

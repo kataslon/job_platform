@@ -1,0 +1,32 @@
+<%= form_tag('', method: :get) do %>
+  <button class="wg-external-submit-button btn btn-default" data-grid-name="grid">Submit</button>
+  <button class="wg-external-reset-button btn btn-default" data-grid-name="grid">Reset</button>
+
+  <%= grid(@proposals_grid, hide_submit_button: true, hide_reset_button: true) do |g|
+
+    g.column name: 'Speciality', attribute: 'speciality_id', custom_filter: Speciality.all.map { |sp| [sp.name, sp.id] } do |proposal|
+      proposal.speciality.name
+    end
+
+    g.column name: 'Applicant', attribute: 'user_id' do |proposal|
+      link_to proposal.user.email, proposal.user
+    end
+
+    g.column name: 'Summary' do |proposal|
+      link_to 'download summary', proposal.summary.url
+    end
+
+    g.column name: 'Salary' do |proposal|
+      proposal.salary
+    end
+
+    g.column name: '' do |proposal|
+      link_to 'Edit', edit_proposal_path(proposal) if current_user && proposal.user.id == current_user.id
+    end
+
+     g.column name: '' do |proposal|
+      link_to 'Delete', proposal_path(proposal), method: :delete, data: { confirm: "Are you sure?"} if current_user && proposal.user.id == current_user.id
+    end
+
+  end -%>
+<% end -%>

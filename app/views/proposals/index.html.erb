@@ -1,0 +1,11 @@
+<h2>All applinats</h2>
+<div class="row">
+  <div class="span12">
+    <div align='right'>
+      <% if can? :new, Proposal %>
+        <%= link_to "New proposal", new_proposal_path %>
+      <% end %>
+    </div>
+    <%= render "grid" %>
+  </div>
+</div>

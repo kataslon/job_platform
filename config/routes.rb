@@ -7,6 +7,9 @@ Rails.application.routes.draw do
   resources :users
   post 'approve_company/:id' => 'companies#approve_company', as: :approve_company
   post 'reject_company/:id'  => 'companies#reject_company',  as: :reject_company
+  resources :proposals
+  get 'applicant_index' => 'proposals#applicant_index', as: :applicant_proposals
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
