@@ -6,7 +6,8 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :companies
-  has_many :managers
+  has_many :managers, dependent: :destroy
+  has_many :proposals, dependent: :destroy
 
   attr_accessor :admin, :company_owner, :manager, :applicant
 
