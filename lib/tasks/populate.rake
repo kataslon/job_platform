@@ -10,12 +10,13 @@ namespace :db do
        Company,
        Speciality,
        Vacancy,
-       User].each(&:delete_all)
+       User,
+       Proposal,
+       Response].each(&:delete_all)
     end
 
     desc 'Create test users with roles'
     task users: :environment do
-      User.delete_all
 
       [:admin, :manager, :applicant].each do |role|
         FactoryGirl.create(
@@ -28,6 +29,32 @@ namespace :db do
 
       10.times do
         FactoryGirl.create :user
+      end
+    end
+
+    desc 'Create fake user for proposals'
+    task users_for_proposals: :environment do
+    @users_for_proposals = []
+    n = 1
+    25.times do
+      @users_for_proposals << FactoryGirl.create(
+        :user, :applicant,
+        email: 'applicant_'  + n.to_s + '@foo.bar',
+        password: '12345678',
+        password_confirmation: '12345678'
+        )
+      n += 1
+    end
+    end
+
+    desc 'Create fake user proposals'
+    task proposals: :environment do
+
+      @users_for_proposals.each do |user|
+        FactoryGirl.create(
+          :proposal, user_id: user.id,
+          speciality_id: Speciality.order('RANDOM()').first.id
+          )
       end
     end
 
@@ -90,8 +117,28 @@ namespace :db do
       end
     end
 
+    desc 'Create fake responses'
+    task responses: :environment do
+      answer = true
+      Speciality.all.each do |speciality|
+        Proposal.where(speciality_id: speciality.id).each do |proposal|
+          Vacancy.where(speciality_id: speciality.id).each do |vacancy|
+            answer = answer ? false : true
+            FactoryGirl.create(
+              :response,
+              proposal_id: proposal.id,
+              vacancy_id: vacancy.id,
+              answer: answer,
+              description: Faker::Lorem.sentence
+              )
+          end
+        end
+      end
+    end
+
     desc 'Erase and fill database with fake data'
-    task :all => [:delete_all, :users, :cities, :companies, :specialities, :vacancies]
+    task :all => [:delete_all, :users, :cities, :companies, :specialities, :vacancies,
+                  :users_for_proposals, :proposals, :responses]
 
   end
 end
