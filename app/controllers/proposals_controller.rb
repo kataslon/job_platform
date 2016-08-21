@@ -12,6 +12,9 @@ class ProposalsController < ApplicationController
       @proposals_grid = initialize_grid(Proposal.where(user_id: current_user.id))
   end
 
+  def show
+  end
+
   def new
     @proposal = Proposal.new
   end
@@ -27,6 +30,10 @@ class ProposalsController < ApplicationController
   end
 
   def edit
+    if @proposal.user.id != current_user.id
+      flash[:success] = "You can not edit someone else's proposal"
+      redirect_to proposals_path
+    end
   end
 
   def update
@@ -39,9 +46,14 @@ class ProposalsController < ApplicationController
   end
 
   def destroy
-    proposal.find(params[:id]).destroy
-    flash[:success] = "proposal deleted."
-    redirect_to proposals_path
+    if @proposal.user.id != current_user.id
+      flash[:success] = "You can not destroy someone else's proposal"
+      redirect_to proposals_path
+    else
+      proposal.find(params[:id]).destroy
+      flash[:success] = "proposal deleted."
+      redirect_to proposals_path
+    end
   end
 
   protected

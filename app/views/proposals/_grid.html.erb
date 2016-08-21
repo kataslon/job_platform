@@ -9,11 +9,15 @@
     end
 
     g.column name: 'Applicant', attribute: 'user_id' do |proposal|
-      link_to proposal.user.email, proposal.user
+      link_to proposal.user.email, proposal
+    end
+
+    g.column name: 'Description' do |proposal|
+      truncate(proposal.description, length: 30)
     end
 
     g.column name: 'Summary' do |proposal|
-      link_to 'download summary', proposal.summary.url
+      link_to 'download summary', proposal.summary.url if proposal.summary.url
     end
 
     g.column name: 'Salary' do |proposal|

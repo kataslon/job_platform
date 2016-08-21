@@ -7,17 +7,19 @@ class Ability
       can :manage, :all
     elsif user.has_role? :company_owner
       can :manage, [Company, Vacancy]
+      can [:show, :index], [Proposal]
       can [:edit, :update], [User]
-      can [:edit, :update], [Response]
+      can [:new, :edit, :update], [Response]
       can :read, :all
     elsif user.has_role? :manager
       can :manage, [Vacancy]
-      can [:edit, :update], [Response]
+      can [:show, :index], [Proposal]
+      can [:new, :edit, :update], [Response]
       can [:new, :create, :show, :index], [Company]
       can [:edit, :update], [User], id: user.id
     elsif user.has_role? :applicant
-      can :manage, [Proposal], id: user.proposals.pluck(:id)
-      can [:edit, :update], [Response]
+      can :manage, [Proposal]
+      can [:new, :edit, :update], [Response]
       can :read, [Vacancy]
       can [:new, :show, :index], [Company]
     else
