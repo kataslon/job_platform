@@ -9,7 +9,7 @@
     end
 
     g.column name: 'Applicant', attribute: 'user_id' do |proposal|
-      link_to proposal.user.email, proposal
+      link_to proposal.user.email, current_user && current_user.has_role?(:manager) ? edit_proposal_path(proposal) : proposal
     end
 
     g.column name: 'Description' do |proposal|

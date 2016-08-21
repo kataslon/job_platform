@@ -1,0 +1,35 @@
+<div class="header">
+  <h2 >
+    <%= @proposal.user.email %>
+  </h2>
+  <h4>
+    Speciality: <b><%= @proposal.speciality.name %></b>
+  </h4>
+  <p>
+    Description: <%= @proposal.description %>
+  </p>
+  <p>
+    Salary: <%= @proposal.salary %>
+  </p>
+  <p>
+    Summary: <%= @proposal.summary.url %>
+  </p>
+</div>
+<%= form_for @proposal do |f| %>
+
+  <%= render 'shared/error_messages', object: @proposal %>
+
+  <%= f.fields_for @response do |fr| %>
+
+    <%= fr.select :vacancy_id, company_vacancies.map { |pr| [pr.speciality.name, pr.id] }.sort, {}, :class => "form-control" %>
+
+  <% end %>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= f.submit 'To invite', class: 'btn btn-default' %>
+      <%= link_to 'Back', proposals_path, class: 'btn btn-default' %>
+    </div>
+  </div>
+
+<% end %>

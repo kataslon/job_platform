@@ -8,11 +8,13 @@
 </div>
 
 <div>
+
   <% if can? :edit, Proposal %>
     <% if @proposal.user.id == current_user.id %>
       <%= link_to 'Edit', edit_proposal_path(@proposal), class: "btn btn-default" %>
     <% end %>
   <% end %>
+
   <% if can? :destroy, Proposal %>
     <% if @proposal.user.id == current_user.id %>
       <%= link_to 'Delete', proposal_path(@proposal), method: 'delete', class: "btn btn-default" %>

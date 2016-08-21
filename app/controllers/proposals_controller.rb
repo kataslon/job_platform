@@ -30,14 +30,14 @@ class ProposalsController < ApplicationController
   end
 
   def edit
-    if @proposal.user.id != current_user.id
-      flash[:success] = "You can not edit someone else's proposal"
-      redirect_to proposals_path
+    if current_user.has_role?(:manager)
+      @response = Response.new
     end
   end
 
   def update
     if @proposal.update_attributes(proposal_params)
+      Response.create(proposal_id: params[:proposal][:response][:vacancy_id], proposal_id: @proposal.id)
       flash[:success] = "Proposal updated"
       redirect_to proposals_path
     else
@@ -63,6 +63,7 @@ class ProposalsController < ApplicationController
     end
 
     def proposal_params
-      params.require(:proposal).permit(:user_id, :speciality_id, :summary, :salary)
+      params.require(:proposal).permit(:user_id, :speciality_id, :summary, :salary,
+                                        responses_attributes: [:vacancy_id])
     end
 end

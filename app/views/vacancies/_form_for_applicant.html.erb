@@ -1,0 +1,32 @@
+<div class="header">
+  <h2 >
+    <%= @vacancy.title %>
+  </h2>
+  <h3>
+    Company: <%= link_to @vacancy.company.name, company_path(@vacancy.company) %>
+  </h3>
+  <h4>
+    Speciality: <b><%= @vacancy.speciality.name %></b>
+  </h4>
+  <p>
+    <%= @vacancy.description %>
+  </p>
+</div>
+<%= form_for @vacancy do |f| %>
+
+  <%= render 'shared/error_messages', object: @vacancy %>
+
+<%= f.fields_for @response do |fr| %>
+
+  <%= fr.select :proposal_id, Proposal.where(user_id: current_user.id).map { |pr| [pr.speciality.name, pr.id] }.sort, {}, :class => "form-control" %>
+
+  <% end %>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= f.submit 'Send a summary', class: 'btn btn-default' %>
+      <%= link_to 'Back', users_path, class: 'btn btn-default' %>
+    </div>
+  </div>
+
+<% end %>

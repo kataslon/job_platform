@@ -1,2 +1,6 @@
 <h2>Edit vacancy</h2>
-<%= render 'form' %>
+<% if current_user.has_role? :applicant %>
+  <%= render 'form_for_applicant' %>
+<% else %>
+  <%= render 'form' %>
+<% end %>

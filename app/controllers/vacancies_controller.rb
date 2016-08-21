@@ -28,14 +28,19 @@ class VacanciesController < ApplicationController
   end
 
   def edit
-    # @company = current_user.company if current_user == "manager"
-    @company = Company.first
+      if current_user.has_role?(:applicant)
+        @response = Response.new
+      else
+      # @company = current_user.company if current_user == "manager"
+      @company = Company.first
+    end
   end
 
   def update
     if @vacancy.update_attributes(vacancy_params)
+      Response.create(proposal_id: params[:vacancy][:response][:proposal_id], vacancy_id: @vacancy.id)
       flash[:success] = "Vacancy updated"
-      redirect_to @vacancy
+      redirect_to vacancies_path
     else
       render 'edit'
     end
@@ -54,6 +59,7 @@ class VacanciesController < ApplicationController
     end
 
     def vacancy_params
-      params.require(:vacancy).permit(:title, :description, :speciality_id, :company_id)
+      params.require(:vacancy).permit(:title, :description, :speciality_id, :company_id,
+                                      responses_attributes: [:proposal_id])
     end
 end

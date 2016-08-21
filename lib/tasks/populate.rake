@@ -18,7 +18,7 @@ namespace :db do
     desc 'Create test users with roles'
     task users: :environment do
 
-      [:admin, :manager, :applicant].each do |role|
+      [:admin, :applicant].each do |role|
         FactoryGirl.create(
           :user, role,
           email: role.to_s + '@foo.bar',
@@ -83,6 +83,21 @@ namespace :db do
       create_company(City.last, company_owner, true)
     end
 
+    desc 'Create fake managers'
+    task managers: :environment do
+
+      n = 1
+      Company.all.each do |company|
+        name = company.name.split.first.delete(',') + n.to_s
+        user = create_manager(name)
+        Manager.create(user_id: user.id, company_id: company.id)
+        n += 1
+      end
+
+      user = create_manager('manager')
+      Manager.create(user_id: user.id, company_id: Company.last.id)
+    end
+
     def create_owner(name)
         FactoryGirl.create(
           :user, :company_owner,
@@ -90,7 +105,16 @@ namespace :db do
           password: '12345678',
           password_confirmation: '12345678'
         )
-      end
+    end
+
+    def create_manager(name)
+        FactoryGirl.create(
+          :user, :manager,
+          email: name + '@foo.bar',
+          password: '12345678',
+          password_confirmation: '12345678'
+        )
+    end
 
     def create_company(city, owner, approval)
         company = FactoryGirl.build( :company, city_id: city.id, user_id: owner.id, approval: approval )
@@ -137,7 +161,7 @@ namespace :db do
     end
 
     desc 'Erase and fill database with fake data'
-    task :all => [:delete_all, :users, :cities, :companies, :specialities, :vacancies,
+    task :all => [:delete_all, :users, :cities, :companies, :managers, :specialities, :vacancies,
                   :users_for_proposals, :proposals, :responses]
 
   end

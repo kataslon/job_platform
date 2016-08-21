@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   post 'reject_company/:id'  => 'companies#reject_company',  as: :reject_company
   resources :proposals
   get 'applicant_index' => 'proposals#applicant_index', as: :applicant_proposals
+  resources :responses
 
 
   # The priority is based upon order of creation: first created -> highest priority.

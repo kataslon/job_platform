@@ -9,11 +9,15 @@
     end
 
     g.column name: 'Vacancy', attribute: 'title'  do |vacancy|
-      link_to vacancy.title, vacancy
+      link_to vacancy.title, current_user && current_user.has_role?(:applicant) ? edit_vacancy_path(vacancy) : vacancy
     end
 
     g.column name: 'Company', attribute: 'company_id', custom_filter: Company.all.map { |c| [c.name, c.id] } do |vacancy|
       vacancy.company.name
+    end
+
+    g.column name: 'Responses' do |vacancy|
+      vacancy.responses.count
     end
 
     g.column name: 'Deadline' do |vacancy|

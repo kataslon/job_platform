@@ -13,14 +13,14 @@ class Ability
       can :read, :all
     elsif user.has_role? :manager
       can :manage, [Vacancy]
-      can [:show, :index], [Proposal]
+      can [:show, :index, :edit, :update], [Proposal]
       can [:new, :edit, :update], [Response]
       can [:new, :create, :show, :index], [Company]
       can [:edit, :update], [User], id: user.id
     elsif user.has_role? :applicant
       can :manage, [Proposal]
       can [:new, :edit, :update], [Response]
-      can :read, [Vacancy]
+      can [:index, :show, :edit, :update], [Vacancy]
       can [:new, :show, :index], [Company]
     else
       can [:new, :create, :show, :index], [Company]
