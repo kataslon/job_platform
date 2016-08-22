@@ -1,0 +1,14 @@
+<% @vacancy.responses.each do |response| %>
+  <tr>
+    <td><%= link_to response.proposal.user.email, response.proposal %></td>
+    <td>
+      <% if response.proposal.summary.url %>
+        <%= link_to 'Download summary', response.proposal.summary.url %>
+      <% end %>
+    </td>
+    <td>
+      <% if can? :edit, Response %>
+        <%= link_to 'Edit', edit_response_path(response) %></td>
+      <% end %>
+  </tr>
+<% end %>

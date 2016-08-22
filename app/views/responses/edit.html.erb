@@ -1,0 +1,4 @@
+<h2>Edit response</h2>
+<% if current_user.has_role?(:manager) || current_user.has_role?(:company_owner) %>
+  <%= render 'form' %>
+<% end %>

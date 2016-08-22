@@ -12,6 +12,9 @@ class ProposalsController < ApplicationController
       @proposals_grid = initialize_grid(Proposal.where(user_id: current_user.id))
   end
 
+  def show
+  end
+
   def new
     @proposal = Proposal.new
   end
@@ -27,10 +30,14 @@ class ProposalsController < ApplicationController
   end
 
   def edit
+    if current_user.has_role?(:manager)
+      @response = Response.new
+    end
   end
 
   def update
     if @proposal.update_attributes(proposal_params)
+      Response.create(proposal_id: params[:proposal][:response][:vacancy_id], proposal_id: @proposal.id)
       flash[:success] = "Proposal updated"
       redirect_to proposals_path
     else
@@ -39,9 +46,14 @@ class ProposalsController < ApplicationController
   end
 
   def destroy
-    proposal.find(params[:id]).destroy
-    flash[:success] = "proposal deleted."
-    redirect_to proposals_path
+    if @proposal.user.id != current_user.id
+      flash[:success] = "You can not destroy someone else's proposal"
+      redirect_to proposals_path
+    else
+      proposal.find(params[:id]).destroy
+      flash[:success] = "proposal deleted."
+      redirect_to proposals_path
+    end
   end
 
   protected
@@ -51,6 +63,7 @@ class ProposalsController < ApplicationController
     end
 
     def proposal_params
-      params.require(:proposal).permit(:user_id, :speciality_id, :summary, :salary)
+      params.require(:proposal).permit(:user_id, :speciality_id, :summary, :salary,
+                                        responses_attributes: [:vacancy_id])
     end
 end

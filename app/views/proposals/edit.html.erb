@@ -1,2 +1,6 @@
 <h2>Edit proposal</h2>
-<%= render 'form' %>
+<% if current_user.has_role?(:manager) %>
+  <%= render 'form_for_manager' %>
+<% else %>
+  <%= render 'form' %>
+<% end %>
